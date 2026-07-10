@@ -216,7 +216,7 @@ struct BrowserLibraryView: View {
         }
         .padding(10)
         .frame(width: 184)
-        .background(OvertureDesign.sidebar)
+        .background(OvertureDesign.librarySidebar)
     }
 
     @ViewBuilder

@@ -381,7 +381,7 @@ private struct BrowserTabChip: View {
     }
 
     private var backgroundColor: Color {
-        if isSelected { return OvertureDesign.elevatedPanel }
+        if isSelected { return OvertureDesign.selectedTab }
         if tab.isPrivate { return stateColor.opacity(0.075) }
         return isHovering ? OvertureDesign.panel : .clear
     }
