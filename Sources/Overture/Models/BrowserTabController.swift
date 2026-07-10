@@ -613,7 +613,7 @@ extension BrowserTabController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationAction: WKNavigationAction,
-        decisionHandler: @escaping @MainActor @Sendable (WKNavigationActionPolicy) -> Void
+        decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
     ) {
         if navigationAction.shouldPerformDownload {
             decisionHandler(.download)
@@ -649,7 +649,7 @@ extension BrowserTabController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,
         decidePolicyFor navigationResponse: WKNavigationResponse,
-        decisionHandler: @escaping @MainActor @Sendable (WKNavigationResponsePolicy) -> Void
+        decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void
     ) {
         decisionHandler(navigationResponse.canShowMIMEType ? .allow : .download)
     }
@@ -709,7 +709,7 @@ extension BrowserTabController: WKNavigationDelegate {
     func webView(
         _ webView: WKWebView,
         didReceive challenge: URLAuthenticationChallenge,
-        completionHandler: @escaping @MainActor @Sendable (
+        completionHandler: @escaping (
             URLSession.AuthChallengeDisposition,
             URLCredential?
         ) -> Void
@@ -766,7 +766,7 @@ extension BrowserTabController: WKUIDelegate {
         _ webView: WKWebView,
         runJavaScriptAlertPanelWithMessage message: String,
         initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable () -> Void
+        completionHandler: @escaping () -> Void
     ) {
         let alert = makeJavaScriptAlert(message: message)
         alert.addButton(withTitle: "OK")
@@ -777,7 +777,7 @@ extension BrowserTabController: WKUIDelegate {
         _ webView: WKWebView,
         runJavaScriptConfirmPanelWithMessage message: String,
         initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable (Bool) -> Void
+        completionHandler: @escaping (Bool) -> Void
     ) {
         let alert = makeJavaScriptAlert(message: message)
         alert.addButton(withTitle: "OK")
@@ -792,7 +792,7 @@ extension BrowserTabController: WKUIDelegate {
         runJavaScriptTextInputPanelWithPrompt prompt: String,
         defaultText: String?,
         initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable (String?) -> Void
+        completionHandler: @escaping (String?) -> Void
     ) {
         let alert = makeJavaScriptAlert(message: prompt)
         let textField = NSTextField(string: defaultText ?? "")
@@ -809,7 +809,7 @@ extension BrowserTabController: WKUIDelegate {
         _ webView: WKWebView,
         runOpenPanelWith parameters: WKOpenPanelParameters,
         initiatedByFrame frame: WKFrameInfo,
-        completionHandler: @escaping @MainActor @Sendable ([URL]?) -> Void
+        completionHandler: @escaping ([URL]?) -> Void
     ) {
         let panel = NSOpenPanel()
         panel.canChooseFiles = true
@@ -830,7 +830,7 @@ extension BrowserTabController: WKUIDelegate {
         requestMediaCapturePermissionFor origin: WKSecurityOrigin,
         initiatedByFrame frame: WKFrameInfo,
         type: WKMediaCaptureType,
-        decisionHandler: @escaping @MainActor @Sendable (WKPermissionDecision) -> Void
+        decisionHandler: @escaping (WKPermissionDecision) -> Void
     ) {
         decisionHandler(mediaCapturePermissionProvider(origin, type))
     }
@@ -846,7 +846,7 @@ extension BrowserTabController: WKUIDelegate {
     private func present(
         _ alert: NSAlert,
         in window: NSWindow?,
-        completion: @escaping @MainActor (NSApplication.ModalResponse) -> Void
+        completion: @escaping (NSApplication.ModalResponse) -> Void
     ) {
         if let window {
             alert.beginSheetModal(for: window, completionHandler: completion)
@@ -863,7 +863,7 @@ extension BrowserTabController: WKDownloadDelegate {
         _ download: WKDownload,
         decideDestinationUsing response: URLResponse,
         suggestedFilename: String,
-        completionHandler: @escaping @MainActor @Sendable (URL?) -> Void
+        completionHandler: @escaping (URL?) -> Void
     ) {
         let activeDownload = register(download)
         do {
