@@ -1,16 +1,40 @@
+import AppKit
 import SwiftUI
 
 enum OvertureDesign {
     static let brand = Color(red: 0.91, green: 0.18, blue: 0.31)
     static let brandHighlight = Color(red: 1, green: 0.42, blue: 0.31)
 
-    static var canvas: Color { Color(nsColor: .windowBackgroundColor) }
-    static var sidebar: Color { Color(nsColor: .underPageBackgroundColor) }
-    static var panel: Color { Color(nsColor: .controlBackgroundColor) }
-    static var elevatedPanel: Color { Color(nsColor: .textBackgroundColor) }
-    static var separator: Color { Color(nsColor: .separatorColor) }
+    // Opaque, brand-tinted surfaces avoid AppKit's under-page gray, which is
+    // intended to sit behind documents and creates an overly harsh contrast
+    // beside the browser's light content surfaces.
+    static let canvas = adaptiveColor(light: 0xFFF8FA, dark: 0x161114)
+    static let sidebar = adaptiveColor(light: 0xF6E7EC, dark: 0x21191C)
+    static let librarySidebar = adaptiveColor(light: 0xFBF1F4, dark: 0x281D21)
+    static let panel = adaptiveColor(light: 0xFFFDFD, dark: 0x2B2024)
+    static let elevatedPanel = adaptiveColor(light: 0xFFF8FA, dark: 0x34262B)
+    static let selectedTab = adaptiveColor(light: 0xFFF8FA, dark: 0x34262B)
+    static let separator = adaptiveColor(light: 0xDCCBD1, dark: 0x49343B)
     static var primaryText: Color { Color(nsColor: .labelColor) }
     static var secondaryText: Color { Color(nsColor: .secondaryLabelColor) }
+
+    private static func adaptiveColor(light: UInt32, dark: UInt32) -> Color {
+        Color(
+            nsColor: NSColor(name: nil) { appearance in
+                let isDark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+                return nsColor(hex: isDark ? dark : light)
+            }
+        )
+    }
+
+    private static func nsColor(hex: UInt32) -> NSColor {
+        NSColor(
+            srgbRed: CGFloat((hex >> 16) & 0xFF) / 255,
+            green: CGFloat((hex >> 8) & 0xFF) / 255,
+            blue: CGFloat(hex & 0xFF) / 255,
+            alpha: 1
+        )
+    }
 
     static func accent(for accent: BrowserAccent) -> Color {
         switch accent {
