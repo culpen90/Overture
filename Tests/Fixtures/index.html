@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overture Browser Test</title>
+  <style>
+    :root { color-scheme: light dark; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { max-width: 760px; margin: 64px auto; padding: 0 24px; }
+    .card { border: 1px solid color-mix(in srgb, CanvasText 20%, transparent); border-radius: 18px; padding: 24px; }
+    a, button { margin-right: 16px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <p>Local deterministic fixture</p>
+    <h1>Overture is browsing</h1>
+    <p id="status">This page verifies navigation, history, new tabs, downloads, and find-in-page.</p>
+    <p>
+      <a id="second-page" href="second.html">Open the second page</a>
+      <a id="new-tab" href="second.html" target="_blank">Open in a new tab</a>
+      <a id="download" href="download.txt" download>Download fixture</a>
+    </p>
+    <button id="dialog" onclick="document.querySelector('#status').textContent = 'JavaScript interaction works.'">Run interaction</button>
+  </main>
+</body>
+</html>
